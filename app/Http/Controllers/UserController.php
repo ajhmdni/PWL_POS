@@ -96,11 +96,8 @@ class UserController extends Controller
          | });
          */
 
-        return view('user', ['data' => [
-            'user_id' => 3,
-            'username' => 'user',
-            'nama' => 'aji hamdani ahmad'
-        ]]);
+        $user = UserModel::where('username', 'manager9')->firstOrFail();
+        return view('user', ['data' => $user]);
     }
 }
 
