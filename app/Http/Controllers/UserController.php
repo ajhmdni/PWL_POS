@@ -96,7 +96,13 @@ class UserController extends Controller
          | });
          */
 
-        $user = UserModel::where('username', 'manager9')->firstOrFail();
+        /*
+         | GET DATA WITH INVALID ID <Expected to throw 404 not found error>
+         | 
+         | $user = UserModel::where('username', 'manager9')->firstOrFail();
+         */
+
+        $user = UserModel::where('level_id', 2)->count();
         return view('user', ['data' => $user]);
     }
 }
