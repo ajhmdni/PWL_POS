@@ -17,7 +17,7 @@ class UserModel extends Model
         'username',
         'nama',
         'password',
-        'level_id',
+        // 'level_id',
     ];
 
     protected $hidden = [

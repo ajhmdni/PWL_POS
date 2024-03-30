@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\UserDataTable;
+use App\Http\Requests\StoreUserRequest;
+use App\Models\LevelModel;
 use App\Models\UserModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index(UserDataTable $dataTable) {
         /*
          | INSERT DATA
          | 
@@ -193,31 +197,34 @@ class UserController extends Controller
         //  $user = UserModel::all();
         //  return view('user', ['data' => $user]);
 
-        $user = UserModel::with('level')->get();
-        return view('user', ['data' => $user]);
+        return $dataTable->render('user.index');
     }
 
-    public function tambah() {
-        return view('user_tambah');
+    public function create() {
+        $levels = LevelModel::all();
+        return view('user.create')->with('levels', $levels);
     }
 
-    public function tambah_simpan(Request $request) {
+    public function store(StoreUserRequest $request): RedirectResponse
+    {
+        $validated_user = $request->validated();
+        
         UserModel::create([
-            'username' => $request->username,
-            'nama' => $request->nama,
-            'password' => Hash::make($request->password),
-            'level_id' => $request->level_id
+            'username' => $validated_user['username'],
+            'nama' => $validated_user['nama'],
+            'password' => Hash::make($validated_user['password']),
+            'level_id' => $validated_user['level']
         ]);
 
         return redirect('/user');
     }
 
-    public function ubah($id) {
+    public function edit($id) {
         $user = UserModel::find($id);
-        return view('user_ubah', ['data' => $user]);
+        return view('user.edit', ['data' => $user]);
     }
 
-    public function ubah_simpan($id, Request $request) {
+    public function update($id, Request $request) {
         $user = UserModel::find($id);
 
         $user->username = $request->username;
@@ -230,7 +237,7 @@ class UserController extends Controller
         return redirect('/user');
     }
 
-    public function hapus($id) {
+    public function delete($id) {
         $user = UserModel::find($id);
         $user->delete();
 
