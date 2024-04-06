@@ -1,71 +1,44 @@
-@extends('layouts.app')
-
-@section('subtitle', 'Level')
-@section('content_header_title', 'Level')
-@section('content_header_subtitle', 'Create')
-
+@extends('layouts.template')
 @section('content')
-<section class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <!-- left column -->
-      <div class="col-md-12">
-        <!-- jquery validation -->
-        <div class="card card-primary">
-          <div class="card-header">
-            <h3 class="card-title">Tambah Level</h3>
-          </div>
-          <!-- /.card-header -->
-          <!-- form start -->
-          <form action="/level/store" method="POST"> 
-            @csrf
-            <div class="card-body">
-              <div class="form-group">
-                <label for="kodeLevel">Kode Level</label>
-                <input
-                  type="text"
-                  name="kodeLevel"
-                  class="form-control @error('kodeLevel') is-invalid @enderror"
-                  id="kodeLevel"
-                  placeholder="Masukkan Kode Level">
-
-                  @error('kodeLevel')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                  @enderror
-
-              </div>
-              <div class="form-group">
-                <label for="namaLevel">Nama Level</label>
-                <input 
-                  type="text" 
-                  name="namaLevel" 
-                  class="form-control @error('namaLevel') is-invalid @enderror" 
-                  id="namaLevel" 
-                  placeholder="Masukkan Nama Level">
-
-                  @error('namaLevel')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                  @enderror
-
-              </div>
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
-        </div>
-        <!-- /.card -->
-        </div>
-      <!--/.col (left) -->
-      <!-- right column -->
-      <div class="col-md-6">
-
-      </div>
-      <!--/.col (right) -->
+  <div class="card card-outline card-primary">
+    <div class="card-header">
+      <h3 class="card-title">{{ $page->title }}</h3>
+      <div class="card-tools"></div>
     </div>
-    <!-- /.row -->
-  </div><!-- /.container-fluid -->
-</section>
+    <div class="card-body">
+      <form method="POST" action="{{ url('level') }}" class="form-horizontal">
+        @csrf
+        <div class="form-group row">
+          <label class="col-1 control-label col-form-label">Kode Level</label>
+          <div class="col-11">
+            <input type="text" class="form-control" id="level_kode" name="level_kode" value="{{ old('level_kode') }}" required>
+            @error('level_kode')
+            <small class="form-text text-danger">{{ $message }}</small>
+            @enderror
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-1 control-label col-form-label">Nama Level</label>
+          <div class="col-11">
+            <input type="text" class="form-control" id="level_nama" name="level_nama" value="{{ old('level_nama') }}" required>
+            @error('level_nama')
+            <small class="form-text text-danger">{{ $message }}</small>
+            @enderror
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-11">
+            <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+            <a class="btn btn-sm btn-default ml-1" href="{{ url('level') }}">Kembali</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 @endsection
 
+@push('css')
+@endpush
+
+@push('js')
+@endpush
