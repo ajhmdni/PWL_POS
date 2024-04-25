@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class UserModel extends Authenticable
+class UserModel extends Authenticable implements JWTSubject
 {
     use HasFactory;
 
@@ -23,6 +24,16 @@ class UserModel extends Authenticable
     protected $hidden = [
         'password',
     ];
+
+    public function getJWTIdentifier(): string
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    }
 
     public function level(): BelongsTo {
         return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
